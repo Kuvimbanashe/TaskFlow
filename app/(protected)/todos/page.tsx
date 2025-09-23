@@ -71,7 +71,7 @@ export default function TodosPage() {
           {["all", "pending", "completed", "overdue"].map((f) => (
             <button
               key={f}
-              onClick={() => setFilter(f as any)}
+              onClick={() => setFilter(f as string)}
               className={`px-3 py-1 rounded-lg font-medium ${
                 filter === f
                   ? "bg-[#1e1e3f] text-orange-300"
@@ -86,7 +86,7 @@ export default function TodosPage() {
         <select
           className="rounded-lg border px-3 py-1 ml-auto md:ml-0"
           value={sort}
-          onChange={(e) => setSort(e.target.value as any)}
+          onChange={(e) => setSort(e.target.value as string)}
         >
           <option value="dueAsc">Due Date ↑</option>
           <option value="dueDesc">Due Date ↓</option>
