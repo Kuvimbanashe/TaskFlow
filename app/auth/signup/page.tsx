@@ -1,117 +1,78 @@
 "use client";
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { Mail, Lock, User } from "lucide-react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/authStore";
 
 export default function SignUpPage() {
   const router = useRouter();
-  const login = useAuthStore((state) => state.login);
+  const { signup } = useAuthStore();
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    login(); // mock sign-up -> logged in
-    router.push("/dashboard");
+    const success = signup(fullName, email, password);
+    if (success) router.push("/dashboard");
+    else setError("User already exists");
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-md rounded-xl bg-white p-8 shadow"
+    <main className="min-h-screen flex items-center justify-center bg-gray-50">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-xl shadow-md w-full max-w-md"
       >
-        <h1 className="text-2xl font-bold text-center">
-          <span className="text-[#1e1e3f]">Create your </span>
-          <span className="text-orange-300">TaskFlow</span>
-          <span className="text-[#1e1e3f]"> account</span>
-        </h1>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Sign up to start managing your tasks effectively
-        </p>
+        <h1 className="text-2xl font-bold text-[#1e1e3f] mb-4">Sign Up</h1>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Full Name
-            </label>
-            <div className="relative mt-1">
-              <User className="absolute left-3 top-3 text-gray-400" size={18} />
-              <input
-                type="text"
-                placeholder="John Doe"
-                className="w-full rounded-lg border px-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"
-                required
-              />
-            </div>
-          </div>
+        {error && <p className="text-red-500 mb-2">{error}</p>}
 
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Email
-            </label>
-            <div className="relative mt-1">
-              <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
-              <input
-                type="email"
-                placeholder="you@example.com"
-                className="w-full rounded-lg border px-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"
-                required
-              />
-            </div>
-          </div>
+        <input
+          type="text"
+          placeholder="Full Name"
+          className="w-full rounded-lg border px-3 py-2 mb-4"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          required
+        />
 
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Password
-            </label>
-            <div className="relative mt-1">
-              <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
-              <input
-                type="password"
-                placeholder="••••••••"
-                className="w-full rounded-lg border px-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"
-                required
-              />
-            </div>
-          </div>
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full rounded-lg border px-3 py-2 mb-4"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Confirm Password
-            </label>
-            <div className="relative mt-1">
-              <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
-              <input
-                type="password"
-                placeholder="••••••••"
-                className="w-full rounded-lg border px-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"
-                required
-              />
-            </div>
-          </div>
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full rounded-lg border px-3 py-2 mb-4"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-[#1e1e3f] px-4 py-2 font-medium text-orange-300 hover:bg-orange-300 hover:text-[#1e1e3f] transition"
-          >
-            Sign Up
-          </button>
-        </form>
+        <button
+          type="submit"
+          className="w-full bg-[#1e1e3f] text-orange-300 rounded-lg py-2 font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
+        >
+          Sign Up
+        </button>
 
-        <p className="mt-6 text-center text-sm text-gray-600">
+        <p className="mt-4 text-sm">
           Already have an account?{" "}
-          <Link
-            href="/auth/signin"
-            className="font-medium text-[#1e1e3f] hover:text-orange-300 transition"
+          <span
+            className="text-orange-300 cursor-pointer"
+            onClick={() => router.push("/signin")}
           >
             Sign In
-          </Link>
+          </span>
         </p>
-      </motion.div>
+      </form>
     </main>
   );
 }
