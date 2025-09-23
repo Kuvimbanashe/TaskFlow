@@ -1,24 +1,27 @@
-"use client";
 
 import { create } from "zustand";
-import Cookies from "js-cookie";
+import { User } from "@/types";
+import mockData from "@/mockData.json";
 
 interface AuthState {
+  currentUser: User | null;
   isAuthenticated: boolean;
-  login: () => void;
-  logout: () => void;
+  signin: (email: string, password: string) => boolean;
+  signout: () => void;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: Cookies.get("isLoggedIn") === "true",
-  login: () => {
-    Cookies.set("isLoggedIn", "true");
-    set({ isAuthenticated: true });
+  currentUser: null,
+  isAuthenticated: false,
+  signin: (email, password) => {
+    const user = mockData.users.find((u) => u.email === email && u.password === password);
+    if (user) {
+      set({ currentUser: user, isAuthenticated: true });
+      return true;
+    }
+    return false;
   },
-  logout: () => {
-    Cookies.remove("isLoggedIn");
-    set({ isAuthenticated: false });
-  },
+  signout: () => set({ currentUser: null, isAuthenticated: false }),
 }));
 
 export default useAuthStore;
