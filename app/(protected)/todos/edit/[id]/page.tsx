@@ -48,7 +48,7 @@ export default function EditTodoPage() {
     router.push("/todos");
   };
 
-  if (!todo) return <p className="p-6">Todo not found or you don't have access.</p>;
+  if (!todo) return <p className="p-6">Todo not found or you don&apost have access.</p>;
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">

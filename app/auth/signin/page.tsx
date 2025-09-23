@@ -56,8 +56,8 @@ export default function SignInPage() {
 </motion.button>
 
 
-        <p className="mt-4 text-sm">
-          Don't have an account?{" "}
+        <p className="mt-4 text-sm pr-5">
+          Don&apost have an account?
           <span
             className="text-orange-300 cursor-pointer"
             onClick={() => router.push("/signup")}
