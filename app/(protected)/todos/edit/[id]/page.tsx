@@ -1,58 +1,54 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import mockData from "@/mockData.json";
-import { Todo, User } from "@/types";
+import { Todo } from "@/types";
+import useAuthStore from "@/store/authStore";
 
 export default function EditTodoPage() {
-  const { id } = useParams();
   const router = useRouter();
-  const isEditMode = !!id;
-  const todoId = Number(id);
+  const params = useParams();
+  const { currentUser } = useAuthStore();
+  const [todo, setTodo] = useState<Todo | null>(null);
 
-  // Mock users
-  const users: User[] = mockData.users;
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [status, setStatus] = useState<Todo["status"]>("pending");
+  const [priority, setPriority] = useState<Todo["priority"]>("medium");
 
-  // Find todo if editing
-  const existingTodo = mockData.todos.find((t) => t.id === todoId);
-
-  // Form state
-  const [title, setTitle] = useState(existingTodo?.title || "");
-  const [description, setDescription] = useState(existingTodo?.description || "");
-  const [dueDate, setDueDate] = useState(
-    existingTodo ? existingTodo.dueDate.substring(0, 16) : ""
-  ); // format YYYY-MM-DDTHH:mm
-  const [status, setStatus] = useState(existingTodo?.status || "pending");
-  const [priority, setPriority] = useState(existingTodo?.priority || "medium");
-  const [assignedTo, setAssignedTo] = useState(existingTodo?.assignedTo || users[0]?.id);
+  useEffect(() => {
+    if (!currentUser) return;
+    const t = mockData.todos.find(
+      (t) => t.id === Number(params.id) && t.userId === currentUser.id
+    );
+    if (t) {
+      setTodo(t);
+      setTitle(t.title);
+      setDescription(t.description);
+      setDueDate(t.dueDate.substring(0, 16));
+      setStatus(t.status);
+      setPriority(t.priority);
+    }
+  }, [params.id, currentUser]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!todo) return;
 
-    const newTodo: Todo = {
-      id: isEditMode ? todoId : mockData.todos.length + 1,
-      title,
-      description,
-      dueDate: new Date(dueDate).toISOString(),
-      status: status as Todo["status"],
-      priority: priority as Todo["priority"],
-      assignedTo: Number(assignedTo),
-      createdAt: isEditMode ? existingTodo!.createdAt : new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    todo.title = title;
+    todo.description = description;
+    todo.dueDate = new Date(dueDate).toISOString();
+    todo.status = status;
+    todo.priority = priority;
+    todo.updatedAt = new Date().toISOString();
 
-    if (isEditMode) {
-      const index = mockData.todos.findIndex((t) => t.id === todoId);
-      mockData.todos[index] = newTodo;
-    } else {
-      mockData.todos.push(newTodo);
-    }
-
-    // Redirect to All Todos page
     router.push("/todos");
   };
+
+  if (!todo) return <p className="p-6">Todo not found or you don't have access.</p>;
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
@@ -69,16 +65,11 @@ export default function EditTodoPage() {
           &larr; Back
         </button>
 
-        <h1 className="text-2xl font-bold text-[#1e1e3f] mb-4">
-          {isEditMode ? "Edit Todo" : "Create New Todo"}
-        </h1>
+        <h1 className="text-2xl font-bold text-[#1e1e3f] mb-4">Edit Todo</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Title
-            </label>
+            <label className="block text-sm font-medium text-[#1e1e3f]">Title</label>
             <input
               type="text"
               className="w-full rounded-lg border px-3 py-2 mt-1"
@@ -88,11 +79,8 @@ export default function EditTodoPage() {
             />
           </div>
 
-          {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Description
-            </label>
+            <label className="block text-sm font-medium text-[#1e1e3f]">Description</label>
             <textarea
               className="w-full rounded-lg border px-3 py-2 mt-1"
               value={description}
@@ -101,11 +89,8 @@ export default function EditTodoPage() {
             />
           </div>
 
-          {/* Due Date */}
           <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Due Date
-            </label>
+            <label className="block text-sm font-medium text-[#1e1e3f]">Due Date</label>
             <input
               type="datetime-local"
               className="w-full rounded-lg border px-3 py-2 mt-1"
@@ -115,15 +100,12 @@ export default function EditTodoPage() {
             />
           </div>
 
-          {/* Status */}
           <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Status
-            </label>
+            <label className="block text-sm font-medium text-[#1e1e3f]">Status</label>
             <select
               className="w-full rounded-lg border px-3 py-2 mt-1"
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => setStatus(e.target.value as Todo["status"])}
             >
               <option value="pending">Pending</option>
               <option value="completed">Completed</option>
@@ -131,37 +113,16 @@ export default function EditTodoPage() {
             </select>
           </div>
 
-          {/* Priority */}
           <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Priority
-            </label>
+            <label className="block text-sm font-medium text-[#1e1e3f]">Priority</label>
             <select
               className="w-full rounded-lg border px-3 py-2 mt-1"
               value={priority}
-              onChange={(e) => setPriority(e.target.value)}
+              onChange={(e) => setPriority(e.target.value as Todo["priority"])}
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
-            </select>
-          </div>
-
-          {/* Assigned User */}
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">
-              Assigned To
-            </label>
-            <select
-              className="w-full rounded-lg border px-3 py-2 mt-1"
-              value={assignedTo}
-              onChange={(e) => setAssignedTo(Number(e.target.value))}
-            >
-              {users.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.fullName}
-                </option>
-              ))}
             </select>
           </div>
 

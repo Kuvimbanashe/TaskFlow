@@ -4,21 +4,22 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import mockData from "@/mockData.json";
-import { Todo, User } from "@/types";
+import { Todo } from "@/types";
+import useAuthStore from "@/store/authStore";
 
 export default function AddTodoPage() {
   const router = useRouter();
-  const users: User[] = mockData.users;
+  const { currentUser } = useAuthStore();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [status, setStatus] = useState<Todo["status"]>("pending");
   const [priority, setPriority] = useState<Todo["priority"]>("medium");
-  const [assignedTo, setAssignedTo] = useState(users[0]?.id || 1);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!currentUser) return;
 
     const newTodo: Todo = {
       id: mockData.todos.length + 1,
@@ -27,7 +28,7 @@ export default function AddTodoPage() {
       dueDate: new Date(dueDate).toISOString(),
       status,
       priority,
-      assignedTo,
+      userId: currentUser.id,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -114,22 +115,6 @@ export default function AddTodoPage() {
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
-            </select>
-          </div>
-
-          {/* Assigned User */}
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">Assigned To</label>
-            <select
-              className="w-full rounded-lg border px-3 py-2 mt-1"
-              value={assignedTo}
-              onChange={(e) => setAssignedTo(Number(e.target.value))}
-            >
-              {users.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.fullName}
-                </option>
-              ))}
             </select>
           </div>
 

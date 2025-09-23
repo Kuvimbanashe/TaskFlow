@@ -1,18 +1,21 @@
-import { create } from "zustand";
-import { User } from "@/types";
-import mockData from "@/mockData.json";
-
 interface AuthState {
   currentUser: User | null;
   isAuthenticated: boolean;
+  verificationCode: string | null;
+  passwordResetUserId: number | null;
   signin: (email: string, password: string) => boolean;
   signup: (fullName: string, email: string, password: string) => boolean;
   signout: () => void;
+  sendVerificationCode: (email: string) => boolean;
+  verifyCode: (code: string) => boolean;
+  resetPassword: (newPassword: string) => boolean;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
   currentUser: null,
   isAuthenticated: false,
+  verificationCode: null,
+  passwordResetUserId: null,
 
   signin: (email, password) => {
     const user = mockData.users.find((u) => u.email === email && u.password === password);
@@ -40,6 +43,39 @@ const useAuthStore = create<AuthState>((set) => ({
   },
 
   signout: () => set({ currentUser: null, isAuthenticated: false }),
-}));
 
-export default useAuthStore;
+  sendVerificationCode: (email) => {
+    const user = mockData.users.find((u) => u.email === email);
+    if (!user) return false;
+
+    // generate random 6-digit code
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    set({ verificationCode: code, passwordResetUserId: user.id });
+    alert(`Copy this Verification code : ${code}`); // simulate sending email
+    return true;
+  },
+
+  verifyCode: (code) => {
+    let success = false;
+    set((state) => {
+      if (state.verificationCode === code) {
+        success = true;
+        return { verificationCode: null }; // clear code after verification
+      }
+      return {};
+    });
+    return success;
+  },
+
+  resetPassword: (newPassword) => {
+    const { passwordResetUserId } = useAuthStore.getState();
+    if (!passwordResetUserId) return false;
+
+    const user = mockData.users.find((u) => u.id === passwordResetUserId);
+    if (!user) return false;
+
+    user.password = newPassword;
+    set({ passwordResetUserId: null });
+    return true;
+  },
+}));
