@@ -1,3 +1,7 @@
+import { create } from "zustand";
+import mockData from "@/mockData.json";
+import { User } from "@/types";
+
 interface AuthState {
   currentUser: User | null;
   isAuthenticated: boolean;
@@ -48,10 +52,9 @@ const useAuthStore = create<AuthState>((set) => ({
     const user = mockData.users.find((u) => u.email === email);
     if (!user) return false;
 
-    // generate random 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     set({ verificationCode: code, passwordResetUserId: user.id });
-    alert(`Copy this Verification code : ${code}`); // simulate sending email
+    console.log("Verification code (simulated):", code);
     return true;
   },
 
@@ -60,7 +63,7 @@ const useAuthStore = create<AuthState>((set) => ({
     set((state) => {
       if (state.verificationCode === code) {
         success = true;
-        return { verificationCode: null }; // clear code after verification
+        return { verificationCode: null };
       }
       return {};
     });
@@ -79,3 +82,5 @@ const useAuthStore = create<AuthState>((set) => ({
     return true;
   },
 }));
+
+export default useAuthStore;
