@@ -3,24 +3,27 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import mockData from "@/mockData.json";
-import { Todo, User } from "@/types";
+import { Todo } from "@/types";
 import Link from "next/link";
+import useAuthStore from "@/store/authStore";
 
 export default function DashboardPage() {
+  const { currentUser } = useAuthStore();
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    setTodos(mockData.todos);
-  }, []);
+    if (currentUser) {
+      const userTodos = mockData.todos.filter((t) => t.userId === currentUser.id);
+      setTodos(userTodos);
+    }
+  }, [currentUser]);
 
   const today = new Date().toISOString().substring(0, 10);
 
   // Stats
   const pendingCount = todos.filter((t) => t.status === "pending").length;
   const overdueCount = todos.filter((t) => t.status === "overdue").length;
-  const dueTodayTodos = todos.filter(
-    (t) => t.dueDate.substring(0, 10) === today
-  );
+  const dueTodayTodos = todos.filter((t) => t.dueDate.substring(0, 10) === today);
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
