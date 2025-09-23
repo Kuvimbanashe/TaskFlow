@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/authStore";
-
+import {motion} from "framer-motion"
 export default function SignUpPage() {
   const router = useRouter();
   const { signup } = useAuthStore();
@@ -56,12 +56,15 @@ export default function SignUpPage() {
           required
         />
 
-        <button
-          type="submit"
-          className="w-full bg-[#1e1e3f] text-orange-300 rounded-lg py-2 font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
-        >
-          Sign Up
-        </button>
+<motion.button
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  type="submit"
+  className="w-full bg-[#1e1e3f] text-orange-300 rounded-lg py-2 font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
+>
+  Sign Up
+</motion.button>
+
 
         <p className="mt-4 text-sm">
           Already have an account?{" "}
