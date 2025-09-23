@@ -7,14 +7,15 @@ export interface User {
 
 export type TodoStatus = "pending" | "completed" | "overdue";
 
+// types/index.ts
 export interface Todo {
   id: number;
   title: string;
   description: string;
   dueDate: string; // ISO string
-  status: TodoStatus;
+  status: "pending" | "completed" | "overdue";
   priority: "low" | "medium" | "high";
-  assignedTo: number; // user id
+  userId: number; // the owner of this todo
   createdAt: string;
   updatedAt: string;
 }
