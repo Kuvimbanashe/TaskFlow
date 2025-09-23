@@ -1,17 +1,15 @@
 {
   "users": [
-    {
-      "id": 1,
-      "fullName": "Alice Johnson",
-      "email": "alice@example.com",
-      "password": "password123"
+    
+    { "id": 1,
+    "fullName": "Camaraderie Mavenga",
+    "email": "cama@todo.com",
+    "password": "password123"
+    
+      
     },
-    {
-      "id": 2,
-      "fullName": "Bob Smith",
-      "email": "bob@example.com",
-      "password": "password123"
-    }
+    
+    { "id": 2, "fullName": "Mukuru", "email": "mukuru@todo.com", "password": "password123" }
   ],
   "todos": [
     {
@@ -21,29 +19,29 @@
       "dueDate": "2025-09-24T10:00:00.000Z",
       "status": "pending",
       "priority": "high",
-      "assignedTo": 1,
+      "userId": 1,
       "createdAt": "2025-09-20T08:00:00.000Z",
       "updatedAt": "2025-09-20T08:00:00.000Z"
     },
     {
       "id": 2,
       "title": "Team meeting",
-      "description": "Weekly sync-up with the development team.",
+      "description": "Weekly sync-up.",
       "dueDate": "2025-09-24T14:00:00.000Z",
       "status": "pending",
       "priority": "medium",
-      "assignedTo": 2,
+      "userId": 1,
       "createdAt": "2025-09-20T09:00:00.000Z",
       "updatedAt": "2025-09-20T09:00:00.000Z"
     },
     {
       "id": 3,
       "title": "Update client report",
-      "description": "Update the weekly report and send it to the client.",
+      "description": "Update weekly report.",
       "dueDate": "2025-09-24T16:30:00.000Z",
       "status": "pending",
       "priority": "high",
-      "assignedTo": 1,
+      "userId": 2,
       "createdAt": "2025-09-21T10:00:00.000Z",
       "updatedAt": "2025-09-21T10:00:00.000Z"
     }
