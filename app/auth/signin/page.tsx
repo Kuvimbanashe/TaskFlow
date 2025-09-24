@@ -1,23 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/authStore";
 import {motion} from "framer-motion"
 export default function SignInPage() {
   const router = useRouter();
-  const { signin } = useAuthStore();
+  const { signin, currentUser } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = signin(email, password);
-    if (success) router.push("/dashboard");
-    else setError("Invalid email or password");
+    const success = await signin(email, password);
+    alert(currentUser?.id)
+    alert(success)
+    
+    if (!success) return setError("Invalid email or password");
+    return router.push("/dashboard")
+
   };
 
+  // Navigate when currentUser changes
+  
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50">
       <form
@@ -57,10 +63,10 @@ export default function SignInPage() {
 
 
         <p className="mt-4 text-sm pr-5">
-          Don&apost have an account?
+          {"Don't"} have an account?
           <span
             className="text-orange-300 cursor-pointer"
-            onClick={() => router.push("/signup")}
+            onClick={() => router.push("/auth/signup")}
           >
             Sign Up
           </span>

@@ -2,6 +2,8 @@ import { create } from "zustand";
 import mockData from "@/mockData.json";
 import { User } from "@/types";
 
+
+
 interface AuthState {
   currentUser: User | null;
   isAuthenticated: boolean;
@@ -23,10 +25,13 @@ const useAuthStore = create<AuthState>((set) => ({
 
   signin: (email, password) => {
     const user = mockData.users.find((u) => u.email === email && u.password === password);
+    
     if (user) {
       set({ currentUser: user, isAuthenticated: true });
+      
       return true;
     }
+    
     return false;
   },
 
