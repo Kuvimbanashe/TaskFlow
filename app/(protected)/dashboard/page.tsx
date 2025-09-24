@@ -101,9 +101,10 @@ useEffect(() => {
           <div className="grid gap-4">
             {dueTodayTodos.map((todo) => (
              <Link
+              key={todo.id}
               href={`/todos/${todo.id}`}>
               <motion.div
-                key={todo.id}
+ 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
