@@ -1,6 +1,6 @@
 "use client";
 
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/authStore";
 import {motion} from "framer-motion"
