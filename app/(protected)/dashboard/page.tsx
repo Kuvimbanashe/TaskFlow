@@ -11,12 +11,20 @@ export default function DashboardPage() {
   const { currentUser } = useAuthStore();
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  useEffect(() => {
-    if (currentUser) {
-      const userTodos:Todo[] = mockData.todos.filter((t) => t.userId === currentUser.id);
-      setTodos(userTodos);
-    }
-  }, [currentUser]);
+  
+useEffect(() => {
+  if (currentUser) {
+    const userTodos: Todo[] = mockData.todos
+      .filter((t) => t.userId === currentUser.id)
+      .map((t) => ({
+        ...t,
+        status: t.status as "pending" | "completed" | "overdue",
+        priority: t.priority as "low" | "medium" | "high",
+      }));
+    setTodos(userTodos);
+  }
+}, [currentUser]);
+
 
   const today = new Date().toISOString().substring(0, 10);
 
