@@ -15,10 +15,19 @@ export default function TodosPage() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!currentUser) return;
-    const userTodos = mockData.todos.filter((t) => t.userId === currentUser.id);
-    setTodos(userTodos);
-  }, [currentUser]);
+  if (!currentUser) return;
+
+  const userTodos = mockData.todos
+    .filter((t) => t.userId === currentUser.id)
+    .map((t) => ({
+      ...t,
+      status: t.status as "pending" | "completed" | "overdue",
+      priority: t.priority as "low" | "medium" | "high",
+    }));
+
+  setTodos(userTodos);
+}, [currentUser]);
+
 
   const filteredTodos = useMemo(() => {
     let result = [...todos];
