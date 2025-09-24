@@ -26,12 +26,14 @@ export default function AboutPage() {
           <p className="text-gray-600 text-lg mb-4">
             TaskFlow, a personal task management application designed to help you stay on top of your daily responsibilities. Organize your tasks, track deadlines, and maintain focus with ease.
           </p>
-          <p className="text-gray-600 text-lg mb-4">
+          <p className="text-gray-600 text-lg mb-4 pb-4">
             Developed by Camaraderie Mavenga using Next.js, TypeScript, Tailwind CSS, Framer Motion, and Zustand, TaskFlow provides a fast, responsive, and interactive experience for managing your personal todos.
           </p>
-          <a className="text-gray-600 text-lg">
-            Vie My Web Portfolio
-          </a>
+          <Link
+          href={`https://cama-1z3r.onrender.com`}
+          className="text-blue-700"
+            View My Web Portfolio
+           </Link>
         </motion.div>
 
         {/* Right Image */}
