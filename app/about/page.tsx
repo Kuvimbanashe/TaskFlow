@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Navbar1 from "@/components/Navbar1";
 import useAuthStore from "@/store/authStore";
+import Link from "next/link";
 export default function AboutPage() {
   
   const { isAuthenticated } = useAuthStore();
