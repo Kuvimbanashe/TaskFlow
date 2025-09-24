@@ -100,6 +100,8 @@ useEffect(() => {
         ) : (
           <div className="grid gap-4">
             {dueTodayTodos.map((todo) => (
+             <Link
+              href={`/todos/${todo.id}`}>
               <motion.div
                 key={todo.id}
                 initial={{ opacity: 0, y: 10 }}
@@ -108,12 +110,12 @@ useEffect(() => {
                 className="rounded-lg bg-white p-4 shadow hover:shadow-md flex flex-col md:flex-row md:justify-between md:items-center"
               >
                 <div>
-                  <Link
-                    href={`/todos/${todo.id}`}
-                    className="font-semibold text-[#1e1e3f] hover:text-orange-300 transition"
+                  <p
+                    
+                    className="font-semibold text-[#1e1e3f] hovertext-orange-300 transition"
                   >
                     {todo.title}
-                  </Link>
+                  </p>
                   <p className="text-gray-500 text-sm">{todo.description}</p>
                 </div>
                 <span
@@ -128,6 +130,7 @@ useEffect(() => {
                   {todo.status.toUpperCase()}
                 </span>
               </motion.div>
+               </Link>
             ))}
           </div>
         )}

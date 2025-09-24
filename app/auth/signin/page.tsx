@@ -14,15 +14,14 @@ export default function SignInPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const success = await signin(email, password);
-    alert(currentUser?.id)
-    alert(success)
+    
     
     if (!success) return setError("Invalid email or password");
     return router.push("/dashboard")
 
   };
 
-  // Navigate when currentUser changes
+
   
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50">
