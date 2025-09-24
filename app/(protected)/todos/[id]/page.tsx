@@ -48,14 +48,14 @@ export default function TodoDetailPage() {
         <p className="text-gray-600 mb-4">{todo.description}</p>
 
         <div className="flex flex-wrap gap-4 mb-4">
-          <div className="px-3 py-1 rounded-full font-medium text-sm 
+          <div className=`px-3 py-1 rounded-full font-medium text-sm 
             ${
               todo.status === "pending"
                 ? "bg-yellow-200 text-yellow-800"
                 : todo.status === "completed"
                 ? "bg-green-200 text-green-800"
                 : "bg-red-200 text-red-800"
-            }"
+            }`
           >
             Status: {todo.status.toUpperCase()}
           </div>
