@@ -1,3 +1,4 @@
+// app/(protected)/todos/edit/[id]/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -20,29 +21,26 @@ export default function EditTodoPage() {
   const [priority, setPriority] = useState<Todo["priority"]>("medium");
 
   useEffect(() => {
-  if (!currentUser) return;
+    if (!currentUser) return;
 
-  const t = mockData.todos.find(
-    (t) => t.id === Number(params.id) && t.userId === currentUser.id
-  );
+    const t = mockData.todos
+      .filter((t) => t.userId === currentUser.id)
+      .map((t) => ({
+        ...t,
+        status: t.status as "pending" | "completed" | "overdue",
+        priority: t.priority as "low" | "medium" | "high",
+      }))
+      .find((t) => t.id === Number(params.id));
 
-  if (t) {
-    // Cast status and priority to match Todo type
-    const typedTodo: Todo = {
-      ...t,
-      status: t.status as "pending" | "completed" | "overdue",
-      priority: t.priority as "low" | "medium" | "high",
-    };
-
-    setTodo(typedTodo);
-    setTitle(typedTodo.title);
-    setDescription(typedTodo.description);
-    setDueDate(typedTodo.dueDate.substring(0, 16));
-    setStatus(typedTodo.status);
-    setPriority(typedTodo.priority);
-  }
-}, [params.id, currentUser]);
-
+    if (t) {
+      setTodo(t);
+      setTitle(t.title);
+      setDescription(t.description);
+      setDueDate(t.dueDate.substring(0, 16));
+      setStatus(t.status);
+      setPriority(t.priority);
+    }
+  }, [params.id, currentUser]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,76 +70,61 @@ export default function EditTodoPage() {
           onClick={() => router.back()}
           className="mb-4 rounded-lg bg-[#1e1e3f] px-3 py-1 text-orange-300 hover:bg-orange-300 hover:text-[#1e1e3f] transition"
         >
-          &larr; Back
+          Back
         </button>
 
         <h1 className="text-2xl font-bold text-[#1e1e3f] mb-4">Edit Todo</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">Title</label>
-            <input
-              type="text"
-              className="w-full rounded-lg border px-3 py-2 mt-1"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Title"
+            className="rounded-lg border px-3 py-2"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">Description</label>
-            <textarea
-              className="w-full rounded-lg border px-3 py-2 mt-1"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </div>
+          <textarea
+            placeholder="Description"
+            className="rounded-lg border px-3 py-2"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">Due Date</label>
-            <input
-              type="datetime-local"
-              className="w-full rounded-lg border px-3 py-2 mt-1"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              required
-            />
-          </div>
+          <input
+            type="datetime-local"
+            className="rounded-lg border px-3 py-2"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">Status</label>
-            <select
-              className="w-full rounded-lg border px-3 py-2 mt-1"
-              value={status}
-              onChange={(e) => setStatus(e.target.value as Todo["status"])}
-            >
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-              <option value="overdue">Overdue</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-[#1e1e3f]">Priority</label>
-            <select
-              className="w-full rounded-lg border px-3 py-2 mt-1"
-              value={priority}
-              onChange={(e) => setPriority(e.target.value as Todo["priority"])}
-            >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            className="rounded-lg bg-[#1e1e3f] px-4 py-2 font-medium text-orange-300 hover:bg-orange-300 hover:text-[#1e1e3f] transition"
+          <select
+            className="rounded-lg border px-3 py-2"
+            value={status}
+            onChange={(e) => setStatus(e.target.value as Todo["status"])}
           >
-            Update Todo
-          </button>
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+            <option value="overdue">Overdue</option>
+          </select>
+
+          <select
+            className="rounded-lg border px-3 py-2"
+            value={priority}
+            onChange={(e) => setPriority(e.target.value as Todo["priority"])}
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="rounded-lg bg-[#1e1e3f] px-4 py-2 text-orange-300 hover:bg-orange-300 hover:text-[#1e1e3f] transition"
+          >
+            Save
+          </motion.button>
         </form>
       </motion.div>
     </main>

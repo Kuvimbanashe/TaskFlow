@@ -1,3 +1,4 @@
+// app/(protected)/todos/page.tsx
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
@@ -7,45 +8,53 @@ import mockData from "@/mockData.json";
 import Link from "next/link";
 import { Todo } from "@/types";
 
+type FilterType = "all" | "pending" | "completed" | "overdue";
+type SortType = "dueAsc" | "dueDesc" | "priority";
+
 export default function TodosPage() {
   const { currentUser } = useAuthStore();
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [filter, setFilter] = useState<"all" | "pending" | "completed" | "overdue">("all");
-  const [sort, setSort] = useState<"dueAsc" | "dueDesc" | "priority">("dueAsc");
+  const [filter, setFilter] = useState<FilterType>("all");
+  const [sort, setSort] = useState<SortType>("dueAsc");
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-  if (!currentUser) return;
+    if (!currentUser) return;
 
-  const userTodos = mockData.todos
-    .filter((t) => t.userId === currentUser.id)
-    .map((t) => ({
-      ...t,
-      status: t.status as "pending" | "completed" | "overdue",
-      priority: t.priority as "low" | "medium" | "high",
-    }));
+    // Cast each todo to correct types
+    const userTodos: Todo[] = mockData.todos
+      .filter((t) => t.userId === currentUser.id)
+      .map((t) => ({
+        ...t,
+        status: t.status as "pending" | "completed" | "overdue",
+        priority: t.priority as "low" | "medium" | "high",
+      }));
 
-  setTodos(userTodos);
-}, [currentUser]);
-
+    setTodos(userTodos);
+  }, [currentUser]);
 
   const filteredTodos = useMemo(() => {
     let result = [...todos];
 
-    // Filter
     if (filter !== "all") result = result.filter((t) => t.status === filter);
 
-    // Search
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(
-        (t) => t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q)
+        (t) =>
+          t.title.toLowerCase().includes(q) ||
+          t.description.toLowerCase().includes(q)
       );
     }
 
-    // Sort
-    if (sort === "dueAsc") result.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
-    if (sort === "dueDesc") result.sort((a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime());
+    if (sort === "dueAsc")
+      result.sort(
+        (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+      );
+    if (sort === "dueDesc")
+      result.sort(
+        (a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime()
+      );
     if (sort === "priority") {
       const priorityOrder = { high: 1, medium: 2, low: 3 };
       result.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
@@ -54,7 +63,8 @@ export default function TodosPage() {
     return result;
   }, [todos, filter, sort, search]);
 
-  if (!currentUser) return <p className="p-6">Please sign in to see your todos.</p>;
+  if (!currentUser)
+    return <p className="p-6">Please sign in to see your todos.</p>;
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
@@ -80,7 +90,7 @@ export default function TodosPage() {
           {["all", "pending", "completed", "overdue"].map((f) => (
             <button
               key={f}
-              onClick={() => setFilter(f as string)}
+              onClick={() => setFilter(f as FilterType)}
               className={`px-3 py-1 rounded-lg font-medium ${
                 filter === f
                   ? "bg-[#1e1e3f] text-orange-300"
@@ -95,7 +105,7 @@ export default function TodosPage() {
         <select
           className="rounded-lg border px-3 py-1 ml-auto md:ml-0"
           value={sort}
-          onChange={(e) => setSort(e.target.value as string)}
+          onChange={(e) => setSort(e.target.value as SortType)}
         >
           <option value="dueAsc">Due Date ↑</option>
           <option value="dueDesc">Due Date ↓</option>
@@ -131,7 +141,10 @@ export default function TodosPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              whileHover={{ scale: 1.03, boxShadow: "0px 10px 20px rgba(0,0,0,0.12)" }}
+              whileHover={{
+                scale: 1.03,
+                boxShadow: "0px 10px 20px rgba(0,0,0,0.12)",
+              }}
               className={`bg-white p-6 rounded-xl shadow cursor-pointer border-l-4 transition-colors ${
                 todo.priority === "high"
                   ? "border-red-500"
@@ -145,7 +158,8 @@ export default function TodosPage() {
               <p className="mt-3 text-sm text-gray-500">
                 Due: {new Date(todo.dueDate).toLocaleString()}
               </p>
-              <p className={`mt-1 font-medium ${
+              <p
+                className={`mt-1 font-medium ${
                   todo.status === "pending"
                     ? "text-yellow-500"
                     : todo.status === "completed"
