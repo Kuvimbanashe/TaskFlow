@@ -70,7 +70,7 @@ export default function SignUpPage() {
           Already have an account?{" "}
           <span
             className="text-orange-300 cursor-pointer"
-            onClick={() => router.push("/signin")}
+            onClick={() => router.push("/auth/signin")}
           >
             Sign In
           </span>

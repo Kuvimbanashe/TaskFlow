@@ -27,7 +27,7 @@ export default function TodoDetailPage() {
     );
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
+    <main className="min-h-screen bg-gray-50 px-5 py-28">
       {/* Back button */}
       <Link
         href="/dashboard"
@@ -78,11 +78,22 @@ export default function TodoDetailPage() {
           </div>
         </div>
 
-        <div className="text-gray-500 text-sm">
+        <div className="text-gray-500 mb-3 text-sm">
           Created At: {new Date(todo.createdAt).toLocaleString()}
         </div>
-        <div className="text-gray-500 text-sm">
+        <div className="text-gray-500 mb-3 text-sm">
           Updated At: {new Date(todo.updatedAt).toLocaleString()}
+        </div>
+        <div className="mt-5 w-full text-center flex gap-5 flex-row">
+          <Link href={`/todos/edit/${todo.id}`} className=" bg-[#1e1e3f] text-orange-300 py-2 px-6 rounded-md w-full md:w-24">
+            Edit
+            
+          </Link>
+          
+          <Link href={`/todos/edit/${todo.id}`} className="border-2 text-red-500 bg-gray-100 py-2 px-6 rounded-md w-full md:w-24">
+            Delete
+            
+          </Link>
         </div>
       </motion.div>
     </main>

@@ -35,9 +35,30 @@ useEffect(() => {
 
   return (
     <main className="min-h-screen bg-gray-50 px-5 py-20">
-      <h1 className="text-3xl font-bold my-6 ">
+
+      
+      <div className="flex flex-col md:flex-row md:items-center justify-start md:justify-between gap-5 my-6">
+              <h1 className="text-3xl font-bold  ">
         <span className="text-[#1e1e3f]">Dashboard</span>
       </h1>
+        
+              {/* CTA Buttons */}
+      <div className="flex gap-4 mb-6">
+        <Link
+          href="/todos/add"
+          className="rounded-lg bg-[#1e1e3f] px-4 py-2 text-orange-300 font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
+        >
+          Add Todo
+        </Link>
+        <Link
+          href="/todos"
+          className="rounded-lg bg-orange-300 px-4 py-2 text-[#1e1e3f] font-medium hover:bg-[#1e1e3f] hover:text-orange-300 transition"
+        >
+          View All Todos
+        </Link>
+      </div>
+        
+      </div>
 
       {/* Stats Cards */}
       <div className="grid md:grid-cols-3 gap-4 mb-6">
@@ -66,21 +87,7 @@ useEffect(() => {
         </motion.div>
       </div>
 
-      {/* CTA Buttons */}
-      <div className="flex gap-4 mb-6">
-        <Link
-          href="/todos/add"
-          className="rounded-lg bg-[#1e1e3f] px-4 py-2 text-orange-300 font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
-        >
-          Add Todo
-        </Link>
-        <Link
-          href="/todos"
-          className="rounded-lg bg-orange-300 px-4 py-2 text-[#1e1e3f] font-medium hover:bg-[#1e1e3f] hover:text-orange-300 transition"
-        >
-          View All Todos
-        </Link>
-      </div>
+
 
       {/* Quick List: Todos Due Today */}
       <div>
@@ -110,7 +117,7 @@ useEffect(() => {
                   <p className="text-gray-500 text-sm">{todo.description}</p>
                 </div>
                 <span
-                  className={`px-2 py-1 mt-2 md:mt-0 rounded-full text-xs font-medium ${
+                  className={`px-2 py-1 mt-2 md:mt-0 w-fit rounded-full text-xs font-medium ${
                     todo.status === "pending"
                       ? "bg-yellow-200 text-yellow-800"
                       : todo.status === "completed"

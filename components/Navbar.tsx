@@ -53,6 +53,15 @@ export default function Navbar() {
       <div className="w-full md:hidden h-screen top-0 right-0 bg-black/60 absolute z-50 flex items-end justify-end ">
         
                 <div className= "w-2/3 rounded-l-xl h-screen top-0 bg-white shadow-md px-6 py-20 flex flex-col gap-4">
+                  
+                  <div className="w-full flex items-end justify-end mb-6">
+                           <button
+          className="md:hidden text-[#1e1e3f]"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+                  </div>
           <Link onClick={() => setIsOpen(!isOpen)} href="/dashboard" className="text-[#1e1e3f] hover:text-orange-300 transition">
             Dashboard
           </Link>

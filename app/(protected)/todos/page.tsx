@@ -67,16 +67,16 @@ export default function TodosPage() {
     return <p className="p-6">Please sign in to see your todos.</p>;
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <h1 className="text-3xl font-bold text-[#1e1e3f]">Your Todos</h1>
+    <main className="min-h-screen bg-gray-50 px-5 md:px-20 py-20">
+      <div className="flex flex-co md:flex-row justify-between items-start md:items-center my-6 md:mt-16 md:pr-10 gap-4">
+        <h1 className="text-3xl font-bold text-[#1e1e3f]">All Tasks</h1>
 
         <div className="flex flex-wrap gap-2">
           <Link href="/todos/add">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-[#1e1e3f] text-orange-300 px-4 py-2 rounded-lg font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
+              className="bg-[#1e1e3f] text-orange-300 px-6 py-2 rounded-lg font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
             >
               + Add Todo
             </motion.button>
@@ -85,8 +85,8 @@ export default function TodosPage() {
       </div>
 
       {/* Filters, Sort, Search */}
-      <div className="flex flex-col md:flex-row gap-3 items-start md:items-center mb-6">
-        <div className="flex gap-2 flex-wrap">
+      <div className="flex flex-col md:flex-row gap-3 items-start md:items-center justify-between my-6">
+        <div className="flex gap-2 overflow-scroll">
           {["all", "pending", "completed", "overdue"].map((f) => (
             <button
               key={f}
@@ -102,8 +102,10 @@ export default function TodosPage() {
           ))}
         </div>
 
-        <select
-          className="rounded-lg border px-3 py-1 ml-auto md:ml-0"
+<div className="flex flex-col md:flex-row gap-4 w-full mt-6 md:mt-0">
+  
+          <select
+          className="rounded-lg w-full border px-6 py-3 ml-auto md:ml-0"
           value={sort}
           onChange={(e) => setSort(e.target.value as SortType)}
         >
@@ -115,10 +117,12 @@ export default function TodosPage() {
         <input
           type="text"
           placeholder="Search todos..."
-          className="rounded-lg border px-3 py-1 mt-2 md:mt-0 md:ml-2"
+          className="rounded-lg border px-6 py-3 md:mt-0 md:ml-2 w-full"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+  
+</div>
       </div>
 
       {/* Todos Grid */}
@@ -136,8 +140,12 @@ export default function TodosPage() {
           )}
 
           {filteredTodos.map((todo) => (
+            <Link
+            key={todo.id}
+            href={`/todos/${todo.id}`}>
+            
             <motion.div
-              key={todo.id}
+              
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -145,7 +153,7 @@ export default function TodosPage() {
                 scale: 1.03,
                 boxShadow: "0px 10px 20px rgba(0,0,0,0.12)",
               }}
-              className={`bg-white p-6 rounded-xl shadow cursor-pointer border-l-4 transition-colors ${
+              className={`bg-white p-6 rounded-xl shadow cursor-pointer  transition-colors ${
                 todo.priority === "high"
                   ? "border-red-500"
                   : todo.priority === "medium"
@@ -155,11 +163,11 @@ export default function TodosPage() {
             >
               <h3 className="text-[#1e1e3f] font-bold text-xl">{todo.title}</h3>
               <p className="text-gray-600 mt-2">{todo.description}</p>
-              <p className="mt-3 text-sm text-gray-500">
+              <p className="mt-3 hidden text-sm text-gray-500">
                 Due: {new Date(todo.dueDate).toLocaleString()}
               </p>
               <p
-                className={`mt-1 font-medium ${
+                className={`mt-1 hidden font-medium ${
                   todo.status === "pending"
                     ? "text-yellow-500"
                     : todo.status === "completed"
@@ -170,17 +178,18 @@ export default function TodosPage() {
                 Status: {todo.status.charAt(0).toUpperCase() + todo.status.slice(1)}
               </p>
               <div className="mt-4 flex gap-3">
-                <Link href={`/todos/edit/${todo.id}`}>
+                
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-3 py-1 bg-[#1e1e3f] text-orange-300 rounded hover:bg-orange-300 hover:text-[#1e1e3f] transition"
+                    className="px-3 py-1 bg-[#1e1e3f] hidden text-orange-300 rounded hover:bg-orange-300 hover:text-[#1e1e3f] transition"
                   >
                     Edit
                   </motion.button>
-                </Link>
+               
               </div>
             </motion.div>
+             </Link>
           ))}
         </AnimatePresence>
       </div>

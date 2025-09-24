@@ -56,10 +56,10 @@ export default function EditTodoPage() {
     router.push("/todos");
   };
 
-  if (!todo) return <p className="p-6">Todo not found or you don&apost have access.</p>;
+  if (!todo) return <p className="p-6 mt-24">Todo not found or you don&apost have access.</p>;
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
+    <main className="min-h-screen bg-gray-50 px-6 py-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -85,6 +85,7 @@ export default function EditTodoPage() {
           />
 
           <textarea
+          
             placeholder="Description"
             className="rounded-lg border px-3 py-2"
             value={description}
