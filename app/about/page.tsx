@@ -2,32 +2,36 @@
 
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
-
+import Navbar1 from "@/components/Navbar1";
+import useAuthStore from "@/store/authStore";
 export default function AboutPage() {
+  
+  const { isAuthenticated } = useAuthStore();
+  
   return (
     <main className="min-h-screen bg-gray-50">
-      <Navbar />
+      {isAuthenticated ? <Navbar/> : <Navbar1/>}
 
-      <div className="max-w-7xl mx-auto px-6 py-32 flex flex-col lg:flex-row items-center gap-16">
+      <div className="max-w-7xl mx-auto px-6 py-32 flex flex-col md:flex-row items-center gap-16">
         {/* Left Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
-          className="flex-1 text-center lg:text-left"
+          className="flex-1 text- lg:text-left"
         >
           <h1 className="text-4xl sm:text-5xl font-bold text-[#1e1e3f] mb-6">
             About <span className="text-orange-300">TaskFlow</span>
           </h1>
           <p className="text-gray-600 text-lg mb-4">
-            TaskFlow is a modern, personal task management application designed to help you stay on top of your daily responsibilities. Organize your tasks, track deadlines, and maintain focus with ease.
+            TaskFlow, a personal task management application designed to help you stay on top of your daily responsibilities. Organize your tasks, track deadlines, and maintain focus with ease.
           </p>
           <p className="text-gray-600 text-lg mb-4">
-            Built with **Next.js, TypeScript, Tailwind CSS, Framer Motion, and Zustand**, TaskFlow provides a fast, responsive, and interactive experience for managing your personal todos.
+            Developed by Camaraderie Mavenga using Next.js, TypeScript, Tailwind CSS, Framer Motion, and Zustand, TaskFlow provides a fast, responsive, and interactive experience for managing your personal todos.
           </p>
-          <p className="text-gray-600 text-lg">
-            Our goal is to give individuals a simple yet powerful way to track their tasks without the complexity of team-based apps. Focus on what matters and never miss a deadline again!
-          </p>
+          <a className="text-gray-600 text-lg">
+            Vie My Web Portfolio
+          </a>
         </motion.div>
 
         {/* Right Image */}
@@ -38,9 +42,9 @@ export default function AboutPage() {
           className="flex-1"
         >
           <img
-            src="/about-illustration.png"
+            src="notebook-with-list-desk-with-cup-coffee-beside.jpg"
             alt="About TaskFlow"
-            className="w-full max-w-md mx-auto"
+            className="w-full max-w-md max-h-[500px] rounded-md mx-auto"
           />
         </motion.div>
       </div>

@@ -5,10 +5,12 @@ import mockData from "@/mockData.json";
 import { Todo } from "@/types";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import {useRouter} from "next/navigation"
 
 export default function TodoDetailPage() {
   const params = useParams();
   const todoId = Number(params.id);
+  const router = useRouter()
 
   // Find the todo and cast status & priority to correct union types
   const found = mockData.todos.find((t) => t.id === todoId);
@@ -18,6 +20,15 @@ export default function TodoDetailPage() {
     status: found.status as "pending" | "completed" | "overdue",
     priority: found.priority as "low" | "medium" | "high",
   };
+  
+  const handleDelete = (id: number) => {
+  const index = mockData.todos.findIndex((t) => t.id === id);
+  if (index !== -1) {
+    mockData.todos.splice(index, 1);
+  }
+  router.push("/todos");
+};
+
 
   if (!todo)
     return (
@@ -90,10 +101,10 @@ export default function TodoDetailPage() {
             
           </Link>
           
-          <Link href={`/todos/edit/${todo.id}`} className="border-2 text-red-500 bg-gray-100 py-2 px-6 rounded-md w-full md:w-24">
+          <button onClick={()=>handleDelete(todo.id)} className="border-2 text-red-500 bg-gray-100 py-2 px-6 rounded-md w-full md:w-24">
             Delete
             
-          </Link>
+          </button>
         </div>
       </motion.div>
     </main>

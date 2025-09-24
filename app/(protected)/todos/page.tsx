@@ -86,7 +86,7 @@ export default function TodosPage() {
 
       {/* Filters, Sort, Search */}
       <div className="flex flex-col md:flex-row gap-3 items-start md:items-center justify-between my-6">
-        <div className="flex gap-2 overflow-scroll">
+        <div className="flex gap-2 overflow-scroll w-full">
           {["all", "pending", "completed", "overdue"].map((f) => (
             <button
               key={f}
@@ -101,11 +101,11 @@ export default function TodosPage() {
             </button>
           ))}
         </div>
-
-<div className="flex flex-col md:flex-row gap-4 w-full mt-6 md:mt-0">
+        
+        <div className="flex flex-col md:flex-row gap-4 w-full mt-6 md:mt-0">
   
           <select
-          className="rounded-lg w-full border px-6 py-3 ml-auto md:ml-0"
+          className="rounded-lg w-full md:w-fit border px-6 py-3 md:py-2 md:px-4 ml-auto md:ml-0"
           value={sort}
           onChange={(e) => setSort(e.target.value as SortType)}
         >

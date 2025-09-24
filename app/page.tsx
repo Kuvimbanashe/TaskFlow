@@ -9,13 +9,13 @@ export default function LandingPage() {
     <main className="min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="flex flex-col-reverse lg:flex-row items-center justify-between max-w-7xl mx-auto px-6 py-32 gap-12">
+      <div className="flex  flex-col  items-center justify-center max-w-7xl min-h-[90vh] mx-auto px-6 py-32 gap-12">
         {/* Left content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
-          className="flex-1 text-center lg:text-left"
+          className="flex flex-col  items-center justify-center   text-center "
         >
           <h1 className="text-5xl sm:text-6xl font-bold text-[#1e1e3f]">
             Manage your{" "}
@@ -25,8 +25,8 @@ export default function LandingPage() {
             Stay on top of your tasks and deadlines with a clean, simple, and elegant personal todo manager.
           </p>
 
-          <div className="mt-8 flex justify-center lg:justify-start gap-4 flex-wrap">
-            <Link href="/signup">
+          <div className="mt-8 flex justify-center  gap-4 flex-wrap">
+            <Link href="/auth/signup">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -35,7 +35,7 @@ export default function LandingPage() {
                 Get Started
               </motion.button>
             </Link>
-            <Link href="#features">
+            <Link href="/about">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -47,19 +47,7 @@ export default function LandingPage() {
           </div>
         </motion.div>
 
-        {/* Right image */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-          className="flex-1 hidden"
-        >
-          <img
-            src="/illustration.png"
-            alt="TaskFlow illustration"
-            className="w-full max-w-md mx-auto"
-          />
-        </motion.div>
+ 
       </div>
 
       {/* Features section */}

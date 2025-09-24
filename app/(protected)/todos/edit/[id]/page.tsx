@@ -52,6 +52,21 @@ export default function EditTodoPage() {
     todo.status = status;
     todo.priority = priority;
     todo.updatedAt = new Date().toISOString();
+    
+    const index = mockData.todos.findIndex((t) => t.id === todo.id);
+if (index !== -1) {
+  mockData.todos[index] = {
+    ...todo,
+    title,
+    description,
+    dueDate: new Date(dueDate).toISOString(),
+    status,
+    priority,
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+
 
     router.push("/todos");
   };
