@@ -34,8 +34,8 @@ useEffect(() => {
   const dueTodayTodos = todos.filter((t) => t.dueDate.substring(0, 10) === today);
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <h1 className="text-3xl font-bold mb-6">
+    <main className="min-h-screen bg-gray-50 px-5 py-20">
+      <h1 className="text-3xl font-bold my-6 ">
         <span className="text-[#1e1e3f]">Dashboard</span>
       </h1>
 

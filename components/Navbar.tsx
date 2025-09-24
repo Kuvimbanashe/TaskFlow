@@ -49,25 +49,36 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white shadow-md px-6 py-4 flex flex-col gap-4">
-          <Link href="/dashboard" className="text-[#1e1e3f] hover:text-orange-300 transition">
+      
+      <div className="w-full md:hidden h-screen top-0 right-0 bg-black/60 absolute z-50 flex items-end justify-end ">
+        
+                <div className= "w-2/3 rounded-l-xl h-screen top-0 bg-white shadow-md px-6 py-20 flex flex-col gap-4">
+          <Link onClick={() => setIsOpen(!isOpen)} href="/dashboard" className="text-[#1e1e3f] hover:text-orange-300 transition">
             Dashboard
           </Link>
-          <Link href="/todos" className="text-[#1e1e3f] hover:text-orange-300 transition">
+          <Link
+          onClick={() => setIsOpen(!isOpen)}
+          
+          href="/todos" className="text-[#1e1e3f] hover:text-orange-300 transition">
             Todos
           </Link>
-          <Link href="/about" className="text-[#1e1e3f] hover:text-orange-300 transition">
+          <Link onClick={() => setIsOpen(!isOpen)}
+          href="/about" className="text-[#1e1e3f] hover:text-orange-300 transition">
             About
           </Link>
-          {currentUser && (
+          
             <button
               onClick={signout}
               className="bg-[#1e1e3f] text-orange-300 px-4 py-2 rounded-lg font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
             >
               Logout
             </button>
-          )}
+          
         </div>
+        
+        
+      </div>
+
       )}
     </nav>
   );
