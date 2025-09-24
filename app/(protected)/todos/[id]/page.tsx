@@ -60,14 +60,15 @@ export default function TodoDetailPage() {
             Status: {todo.status.toUpperCase()}
           </div>
 
-          <div className="px-3 py-1 rounded-full font-medium text-sm 
+          <div className={`px-3 py-1 rounded-full font-medium text-sm 
             ${
               todo.priority === "low"
                 ? "bg-blue-200 text-blue-800"
                 : todo.priority === "medium"
                 ? "bg-purple-200 text-purple-800"
                 : "bg-pink-200 text-pink-800"
-            }"
+            }
+            `}
           >
             Priority: {todo.priority.toUpperCase()}
           </div>
