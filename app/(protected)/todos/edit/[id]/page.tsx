@@ -20,19 +20,29 @@ export default function EditTodoPage() {
   const [priority, setPriority] = useState<Todo["priority"]>("medium");
 
   useEffect(() => {
-    if (!currentUser) return;
-    const t = mockData.todos.find(
-      (t) => t.id === Number(params.id) && t.userId === currentUser.id
-    );
-    if (t) {
-      setTodo(t);
-      setTitle(t.title);
-      setDescription(t.description);
-      setDueDate(t.dueDate.substring(0, 16));
-      setStatus(t.status);
-      setPriority(t.priority);
-    }
-  }, [params.id, currentUser]);
+  if (!currentUser) return;
+
+  const t = mockData.todos.find(
+    (t) => t.id === Number(params.id) && t.userId === currentUser.id
+  );
+
+  if (t) {
+    // Cast status and priority to match Todo type
+    const typedTodo: Todo = {
+      ...t,
+      status: t.status as "pending" | "completed" | "overdue",
+      priority: t.priority as "low" | "medium" | "high",
+    };
+
+    setTodo(typedTodo);
+    setTitle(typedTodo.title);
+    setDescription(typedTodo.description);
+    setDueDate(typedTodo.dueDate.substring(0, 16));
+    setStatus(typedTodo.status);
+    setPriority(typedTodo.priority);
+  }
+}, [params.id, currentUser]);
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
