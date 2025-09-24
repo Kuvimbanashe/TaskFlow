@@ -31,8 +31,8 @@ export default function AboutPage() {
             Developed by Camaraderie Mavenga using Next.js, TypeScript, Tailwind CSS, Framer Motion, and Zustand, TaskFlow provides a fast, responsive, and interactive experience for managing your personal todos.
           </p>
           <Link
-          href={`https://cama-1z3r.onrender.com`}
-          className="text-blue-700"
+          href="https://cama-1z3r.onrender.com"
+          className="text-blue-700">
             View My Web Portfolio
            </Link>
         </motion.div>
