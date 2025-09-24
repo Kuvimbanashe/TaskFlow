@@ -59,7 +59,7 @@ const useAuthStore = create<AuthState>((set) => ({
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     set({ verificationCode: code, passwordResetUserId: user.id });
-    alert("Verification code (simulated):", code);
+    alert(`Copy this verification code : ${code}`);
     return true;
   },
 
