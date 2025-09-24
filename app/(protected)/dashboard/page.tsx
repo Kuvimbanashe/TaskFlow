@@ -13,7 +13,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (currentUser) {
-      const userTodos = mockData.todos.filter((t) => t.userId === currentUser.id);
+      const userTodos:Todo[] = mockData.todos.filter((t) => t.userId === currentUser.id);
       setTodos(userTodos);
     }
   }, [currentUser]);
