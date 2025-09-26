@@ -1,6 +1,16 @@
 import { Todo, User } from '@/types';
 
 // Helper functions to read/write to localStorage
+
+interface newUserI {
+  
+  email: string;
+  name: string;
+  password:string;
+
+}
+
+
 const readData = () => {
   if (typeof window === 'undefined') {
     return { users: [], todos: [] };
@@ -83,7 +93,7 @@ export const authApi = {
     return userWithoutPassword;
   },
 
-  register: async (userData: any): Promise<User> => {
+  register: async (userData:newUserI): Promise<User> => {
     await delay(500);
     const data = readData();
     
