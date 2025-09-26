@@ -29,7 +29,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6 py-20">
     
-      <div className="flex flex-col md:flex-row gap-5 md:gap-10 items-center justify-between">
+      <div className="flex flex-col md:flex-row gap-5 md:gap-10 md:items-center md:justify-between">
           <h1 className="text-3xl font-bold  text-[#1e1e3f] ">
         Dashboard
       </h1>
