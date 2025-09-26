@@ -15,7 +15,7 @@ const readData = () => {
   }
 };
 
-const writeData = (data: any) => {
+const writeData = (data: Todo) => {
   if (typeof window === 'undefined') return;
   
   try {
@@ -69,7 +69,7 @@ export const authApi = {
   login: async (email: string, password: string): Promise<User> => {
     await delay(500);
     const data = readData();
-    const user = data.users.find((u: any) => u.email === email);
+    const user = data.users.find((u: User) => u.email === email);
     
     if (!user) {
       throw new Error('User not found');
@@ -87,7 +87,7 @@ export const authApi = {
     await delay(500);
     const data = readData();
     
-    if (data.users.find((u: any) => u.email === userData.email)) {
+    if (data.users.find((u: User) => u.email === userData.email)) {
       throw new Error('User already exists');
     }
     
