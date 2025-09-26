@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { AuthState, User } from '@/types/todo';
+import { AuthState, User } from '@/types';
 import { authApi } from '@/lib/mockApi';
 
 export const useAuthStore = create<AuthState>()(

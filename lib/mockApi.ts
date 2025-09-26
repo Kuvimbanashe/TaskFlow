@@ -3,15 +3,18 @@ import { Todo, User } from '@/types';
 // Helper functions to read/write to localStorage
 
 interface newUserI {
-  
   email: string;
   name: string;
-  password:string;
-
+  password: string;
 }
 
+// Define the database structure
+interface Database {
+  users: User[];
+  todos: Todo[];
+}
 
-const readData = () => {
+const readData = (): Database => {
   if (typeof window === 'undefined') {
     return { users: [], todos: [] };
   }
@@ -25,7 +28,7 @@ const readData = () => {
   }
 };
 
-const writeData = (data: Todo) => {
+const writeData = (data: Database) => { // Changed from Todo to Database
   if (typeof window === 'undefined') return;
   
   try {
@@ -39,7 +42,7 @@ const writeData = (data: Todo) => {
 const initializeData = () => {
   const data = readData();
   if (data.users.length === 0) {
-    const defaultData = {
+    const defaultData: Database = { // Add type annotation
       users: [
         {
           id: "1",
@@ -76,7 +79,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Users API
 export const authApi = {
-  login: async (email: string, password: string): Promise<User> => {
+  login: async (email: string, password: string): Promise<Omit<User, 'password'>> => {
     await delay(500);
     const data = readData();
     const user = data.users.find((u: User) => u.email === email);
@@ -93,7 +96,7 @@ export const authApi = {
     return userWithoutPassword;
   },
 
-  register: async (userData:newUserI): Promise<User> => {
+  register: async (userData: newUserI): Promise<Omit<User, 'password'>> => {
     await delay(500);
     const data = readData();
     
@@ -101,7 +104,7 @@ export const authApi = {
       throw new Error('User already exists');
     }
     
-    const newUser = {
+    const newUser: User = {
       ...userData,
       id: Date.now().toString(),
       createdAt: new Date().toISOString(),
@@ -148,7 +151,7 @@ export const todoApi = {
       throw new Error('Todo not found');
     }
     
-    const updatedTodo = {
+    const updatedTodo: Todo = {
       ...data.todos[todoIndex],
       ...updates,
       updatedAt: new Date().toISOString(),
