@@ -28,6 +28,7 @@ export default function TodoDetailPage() {
       try {
         setLoading(true);
         // Fetch all user's todos and find the specific one
+        if (!user) return null;
         const todos = await todoApi.getTodos(user.id);
         const foundTodo = todos.find(t => t.id === id);
         setTodo(foundTodo || null);

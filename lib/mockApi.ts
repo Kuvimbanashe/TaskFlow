@@ -5,7 +5,7 @@ import { Todo, User } from '@/types';
 interface newUserI {
   email: string;
   name: string;
-  password: string;
+  password?: string;
 }
 
 // Define the database structure
@@ -79,7 +79,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Users API
 export const authApi = {
-  login: async (email: string, password: string): Promise<Omit<User, 'password'>> => {
+  login: async (email: string, password: string): Promise<Omit<User,'password'>> => {
     await delay(500);
     const data = readData();
     const user = data.users.find((u: User) => u.email === email);
@@ -96,7 +96,7 @@ export const authApi = {
     return userWithoutPassword;
   },
 
-  register: async (userData: newUserI): Promise<Omit<User, 'password'>> => {
+  register: async (userData: newUserI): Promise<Omit<User,'password'>> => {
     await delay(500);
     const data = readData();
     
