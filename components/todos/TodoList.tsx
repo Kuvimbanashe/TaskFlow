@@ -41,9 +41,12 @@ export const TodoList = ({ todos, loading, filter = 'all' }: TodoListProps) => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="gap-y-4 flex flex-col">
       {filteredTodos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
+    <div key={todo.id} >
+       <TodoItem todo={todo} />
+    </div>
+       
       ))}
     </div>
   );

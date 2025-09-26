@@ -78,18 +78,24 @@ export default function DashboardPage() {
       {/*  pending todos */}
       <div className="bg-white rounded-lg shadow">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold"> Pending Tasks</h3>
+          <h3 className="text-2xl font-semibold"> Pending <span className="text-orange-300">
+            Tasks
+          </span></h3>
         </div>
         <div className="divide-y divide-gray-200">
           {todos.filter(todo => !todo.completed).map((todo) => (
-           <Link key={todo.id}  href={`/todos/${todo.id}`}  >
-            <div className="px-6 py-4" >
+           <div key={todo.id}>
+             
+             <Link   href={`/todos/${todo.id}`}  >
+            <div className="px-6 py-4 bordert border-gray-200" >
 
               <h4 className="font-medium">{todo.title}</h4>
               <p className="text-sm text-gray-600">{todo.description}</p>
              
             </div>
              </Link>
+             
+           </div>
           
           ))}
         </div>
