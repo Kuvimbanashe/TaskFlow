@@ -36,7 +36,7 @@ export default function TodosPage() {
       <TodoList 
         todos={todos} 
         loading={loading}
-        filter={currentFilter }
+        filter={currentFilter as 'all' | 'pending' | 'completed' }
       />
     </div>
   );
