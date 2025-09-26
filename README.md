@@ -2,17 +2,21 @@
 
 A modern, full-featured todo application built with Next.js, TypeScript, and Tailwind CSS. This application was created as part of a frontend developer position application to demonstrate competency in modern React development.
 
-## 🚀 Features
+ **Live url**
+ [https://task-flow-green.vercel.app](https://task-flow-green.vercel.app)
+ 
 
-- ✅ **User Authentication** - Secure login and registration system
-- 📊 **Dashboard** - Overview with task statistics (pending, due today, overdue)
-- 📝 **Task Management** - Full CRUD operations for todos
-- 📅 **Due Date Tracking** - Set and track task deadlines
-- 🎯 **Smart Filtering** - Filter tasks by status (all, pending, completed)
-- 📱 **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
-- 💾 **Persistent Data** - Mock API with simulated persistence
+##  Features
+
+- **User Authentication** - Secure login and registration system
+-  **Dashboard** - Overview with task statistics (pending, due today, overdue)
+- **Task Management** - Full CRUD operations for todos
+-  **Due Date Tracking** - Set and track task deadlines
+-  **Smart Filtering** - Filter tasks by status (all, pending, completed)
+-  **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+-  **Persistent Data** - Mock API with simulated persistence
 - ⚡ **Real-time Updates** - Instant UI updates with Zustand state management
-- 🎨 **Modern UI** - Beautiful gradient headings and consistent color scheme
+-  **Modern UI** - Beautiful gradient headings and consistent color scheme
 
 ## 🛠️ Tech Stack
 
@@ -24,7 +28,7 @@ A modern, full-featured todo application built with Next.js, TypeScript, and Tai
 - **UI Components**: Custom component library
 - **Development**: Hot reload, TypeScript strict mode
 
-## 🎨 Design System
+##  Design System
 
 ### Color Scheme
 - **Headings**: Gradient from `#1e1e3f` to `orange-300`
@@ -37,7 +41,7 @@ A modern, full-featured todo application built with Next.js, TypeScript, and Tai
 - **Headings**: Gradient text with bold weights
 - **Body**: Clean, readable text with proper hierarchy
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 src/
