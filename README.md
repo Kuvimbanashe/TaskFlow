@@ -54,12 +54,11 @@ src/
 │   ├── todos/             # Todo-specific components
 │   └── ui/                # Base UI components
 ├── lib/                   # Utility libraries
-│   ├── api/               # Mock API implementation
-│   ├── store/             # Zustand stores
-│   └── utils/             # Helper functions
+│                  # Mock API implementation
+│            # Zustand stores
+│             # Helper functions
 ├── types/                 # TypeScript type definitions
-└── data/                  # Mock data storage
-    └── mockData.json      # Initial seed data
+
 ```
 
 ## 🚀 Getting Started
@@ -73,8 +72,8 @@ src/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd todo-app
+   git clone git@github.com:Kuvimbanashe/TaskFlow.git
+   cd TaskFlow
    ```
 
 2. **Install dependencies**
@@ -98,7 +97,7 @@ src/
 
 You can use the following credentials to test the application:
 
-- **Email**: `john@example.com`
+- **Email**: `cama@todo.com`
 - **Password**: `password123`
 
 Or create a new account using the registration form.
@@ -226,33 +225,10 @@ Supported platforms include:
    - Data persists during development hot reloads
    - Page refresh will reset to initial seed data
 
-### Development Tips
 
-- Use React DevTools for state debugging
-- Check browser console for API call simulations
-- Utilize TypeScript for autocomplete and type safety
-- Test responsive design with browser dev tools
 
-## 🤝 Contributing
 
-While this is a demonstration project, contributions are welcome:
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project was created for a frontend developer position application. All code is available for review and demonstration purposes.
-
-## 🙏 Acknowledgments
-
-- **Next.js Team** for the excellent framework
-- **Tailwind CSS** for the utility-first CSS framework
-- **Lucide** for the beautiful icons
-- **Zustand** for simple state management
 
 ---
 
