@@ -1,141 +1,99 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import mockData from "@/mockData.json";
-import { Todo } from "@/types";
-import Link from "next/link";
-import useAuthStore from "@/store/authStore";
+import { useEffect } from 'react';
+import { useAuthStore } from '@/store/authStore';
+import { useTodoStore, getDashboardStats } from '@/store/todoStore';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { Button } from '@/components/ui/Button';
+
+
+
+import Link from "next/link"
 
 export default function DashboardPage() {
-  const { currentUser } = useAuthStore();
-  const [todos, setTodos] = useState<Todo[]>([]);
-
+  const { user } = useAuthStore();
+  const { todos, loading, fetchTodos } = useTodoStore();
   
-useEffect(() => {
-  if (currentUser) {
-    const userTodos: Todo[] = mockData.todos
-      .filter((t) => t.userId === currentUser.id)
-      .map((t) => ({
-        ...t,
-        status: t.status as "pending" | "completed" | "overdue",
-        priority: t.priority as "low" | "medium" | "high",
-      }));
-    setTodos(userTodos);
+  const stats = getDashboardStats(todos);
+
+  useEffect(() => {
+    if (user) {
+      fetchTodos(user.id);
+    }
+  }, [user, fetchTodos]);
+
+  if (loading) {
+    return <LoadingSpinner />;
   }
-}, [currentUser]);
-
-
-  const today = new Date().toISOString().substring(0, 10);
-
-  // Stats
-  const pendingCount = todos.filter((t) => t.status === "pending").length;
-  const overdueCount = todos.filter((t) => t.status === "overdue").length;
-  const dueTodayTodos = todos.filter((t) => t.dueDate.substring(0, 10) === today);
 
   return (
-    <main className="min-h-screen bg-gray-50 px-5 py-20">
-
-      
-      <div className="flex flex-col md:flex-row md:items-center justify-start md:justify-between gap-5 my-6">
-              <h1 className="text-3xl font-bold  ">
-        <span className="text-[#1e1e3f]">Dashboard</span>
+    <div className="space-y-6 py-20">
+    
+      <div className="flex flex-col md:flex-row gap-5 md:gap-10 items-center justify-between">
+          <h1 className="text-3xl font-bold  text-[#1e1e3f] ">
+        Dashboard
       </h1>
-        
-              {/* CTA Buttons */}
-      <div className="flex gap-4 mb-6">
-        <Link
-          href="/todos/add"
-          className="rounded-lg bg-[#1e1e3f] px-4 py-2 text-orange-300 font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
-        >
-          Add Todo
-        </Link>
-        <Link
-          href="/todos"
-          className="rounded-lg bg-orange-300 px-4 py-2 text-[#1e1e3f] font-medium hover:bg-[#1e1e3f] hover:text-orange-300 transition"
-        >
-          View All Todos
-        </Link>
-      </div>
-        
-      </div>
+      
 
-      {/* Stats Cards */}
-      <div className="grid md:grid-cols-3 gap-4 mb-6">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="rounded-xl bg-white p-6 shadow flex flex-col items-start"
-        >
-          <p className="text-gray-500">Pending Todos</p>
-          <p className="text-2xl font-bold text-[#1e1e3f]">{pendingCount}</p>
-        </motion.div>
+        <div className="flex space-x-3 mt-4 sm:mt-0">
+              <Link href={`/todos/add`}>
+                <Button>
 
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="rounded-xl bg-white p-6 shadow flex flex-col items-start"
-        >
-          <p className="text-gray-500">Due Today</p>
-          <p className="text-2xl font-bold text-[#1e1e3f]">{dueTodayTodos.length}</p>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="rounded-xl bg-white p-6 shadow flex flex-col items-start"
-        >
-          <p className="text-gray-500">Overdue Todos</p>
-          <p className="text-2xl font-bold text-[#1e1e3f]">{overdueCount}</p>
-        </motion.div>
-      </div>
-
-
-
-      {/* Quick List: Todos Due Today */}
-      <div>
-        <h2 className="text-2xl font-semibold text-[#1e1e3f] mb-4">
-          Todos Due Today
-        </h2>
-
-        {dueTodayTodos.length === 0 ? (
-          <p className="text-gray-500">No todos due today.</p>
-        ) : (
-          <div className="grid gap-4">
-            {dueTodayTodos.map((todo) => (
-             <Link
-              key={todo.id}
-              href={`/todos/${todo.id}`}>
-              <motion.div
- 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-lg bg-white p-4 shadow hover:shadow-md flex flex-col md:flex-row md:justify-between md:items-center"
+                  Add New Task
+                </Button>
+              </Link>
+              
+              <Link href={`/todos`}>
+              <Button
+                variant="outline"
+                
+                className="text-[#1e1e3f] bg-gray-50 hover:bg-orange-50 inline-flex"
               >
-                <div>
-                  <p
-                    
-                    className="font-semibold text-[#1e1e3f] hovertext-orange-300 transition"
-                  >
-                    {todo.title}
-                  </p>
-                  <p className="text-gray-500 text-sm">{todo.description}</p>
-                </div>
-                <span
-                  className={`px-2 py-1 mt-2 md:mt-0 w-fit rounded-full text-xs font-medium ${
-                    todo.status === "pending"
-                      ? "bg-yellow-200 text-yellow-800"
-                      : todo.status === "completed"
-                      ? "bg-green-200 text-green-800"
-                      : "bg-red-200 text-red-800"
-                  }`}
-                >
-                  {todo.status.toUpperCase()}
-                </span>
-              </motion.div>
+              View All Tasks
+              </Button>
+              
                </Link>
-            ))}
-          </div>
-        )}
+            </div>
+    
+        
       </div>
-    </main>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold text-gray-900">Pending Tasks</h3>
+          <p className="text-3xl font-bold text-[#1e1e3f]">{stats.pending}</p>
+        </div>
+        
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold text-gray-900">Due Today</h3>
+          <p className="text-3xl font-bold text-orange-500">{stats.dueToday}</p>
+        </div>
+        
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold text-gray-900">Overdue</h3>
+          <p className="text-3xl font-bold text-red-500">{stats.overdue}</p>
+        </div>
+      </div>
+
+      {/*  pending todos */}
+      <div className="bg-white rounded-lg shadow">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold"> Pending Tasks</h3>
+        </div>
+        <div className="divide-y divide-gray-200">
+          {todos.filter(todo => !todo.completed).map((todo) => (
+           <Link key={todo.id}  href={`/todos/${todo.id}`}  >
+            <div className="px-6 py-4" >
+
+              <h4 className="font-medium">{todo.title}</h4>
+              <p className="text-sm text-gray-600">{todo.description}</p>
+             
+            </div>
+             </Link>
+          
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }

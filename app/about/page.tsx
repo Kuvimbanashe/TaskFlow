@@ -3,15 +3,15 @@
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Navbar1 from "@/components/Navbar1";
-import useAuthStore from "@/store/authStore";
+import {useAuthStore} from "@/store/authStore";
 import Link from "next/link";
 export default function AboutPage() {
   
-  const { isAuthenticated } = useAuthStore();
+  const { user } = useAuthStore();
   
   return (
     <main className="min-h-screen bg-gray-50">
-      {isAuthenticated ? <Navbar/> : <Navbar1/>}
+      {user ? <Navbar/> : <Navbar1/>}
 
       <div className="max-w-7xl mx-auto px-6 py-32 flex flex-col md:flex-row items-center gap-16">
         {/* Left Content */}

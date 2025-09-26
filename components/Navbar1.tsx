@@ -24,7 +24,7 @@ export default function Navbar() {
             About
           </Link>
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="bg-[#1e1e3f] text-orange-300 px-4 py-2 rounded-lg font-medium hover:bg-orange-300 hover:text-[#1e1e3f] transition"
           >
             Sign In

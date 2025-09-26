@@ -1,91 +1,38 @@
-import { create } from "zustand";
-import mockData from "@/mockData.json";
-import { User } from "@/types";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { AuthState, User } from '@/types/todo';
+import { authApi } from '@/lib/mockApi';
 
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
+      user: null,
+      isAuthenticated: false,
 
+      login: async (email: string, password: string) => {
+        try {
+          const user = await authApi.login(email, password);
+          set({ user, isAuthenticated: true });
+        } catch (error) {
+          throw error;
+        }
+      },
 
-interface AuthState {
-  currentUser: User | null;
-  isAuthenticated: boolean;
-  verificationCode: string | null;
-  passwordResetUserId: number | null;
-  signin: (email: string, password: string) => boolean;
-  signup: (fullName: string, email: string, password: string) => boolean;
-  signout: () => void;
-  sendVerificationCode: (email: string) => boolean;
-  verifyCode: (code: string) => boolean;
-  resetPassword: (newPassword: string) => boolean;
-}
+      logout:async () => {
+        set({ user: null, isAuthenticated: false });
+      },
 
-const useAuthStore = create<AuthState>((set) => ({
-  currentUser: null,
-  isAuthenticated: false,
-  verificationCode: null,
-  passwordResetUserId: null,
-
-  signin: (email, password) => {
-    const user = mockData.users.find((u) => u.email === email && u.password === password);
-    
-    if (user) {
-      set({ currentUser: user, isAuthenticated: true });
-      
-      return true;
+      register: async (userData) => {
+        try {
+          const user = await authApi.register(userData);
+          set({ user, isAuthenticated: true });
+        } catch (error) {
+          throw error;
+        }
+      },
+    }),
+    {
+      name: 'auth-storage',
     }
-    
-    return false;
-  },
-
-  signup: (fullName, email, password) => {
-    const exists = mockData.users.find((u) => u.email === email);
-    if (exists) return false;
-
-    const newUser: User = {
-      id: mockData.users.length + 1,
-      fullName,
-      email,
-      password,
-    };
-
-    mockData.users.push(newUser);
-    set({ currentUser: newUser, isAuthenticated: true });
-    return true;
-  },
-
-  signout: () => set({ currentUser: null, isAuthenticated: false }),
-
-  sendVerificationCode: (email) => {
-    const user = mockData.users.find((u) => u.email === email);
-    if (!user) return false;
-
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    set({ verificationCode: code, passwordResetUserId: user.id });
-    alert(`Copy this verification code : ${code}`);
-    return true;
-  },
-
-  verifyCode: (code) => {
-    let success = false;
-    set((state) => {
-      if (state.verificationCode === code) {
-        success = true;
-        return { verificationCode: null };
-      }
-      return {};
-    });
-    return success;
-  },
-
-  resetPassword: (newPassword) => {
-    const { passwordResetUserId } = useAuthStore.getState();
-    if (!passwordResetUserId) return false;
-
-    const user = mockData.users.find((u) => u.id === passwordResetUserId);
-    if (!user) return false;
-
-    user.password = newPassword;
-    set({ passwordResetUserId: null });
-    return true;
-  },
-}));
-
-export default useAuthStore;
+  )
+);
