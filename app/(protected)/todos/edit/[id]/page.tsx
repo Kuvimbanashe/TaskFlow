@@ -6,7 +6,7 @@ import  {useAuthStore}  from '@/store/authStore';
 import { useTodoStore } from '@/store/todoStore';
 import { TodoForm } from '@/components/todos/TodoForm';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { Todo } from '@/types/todo';
+import { Todo } from '@/types';
 
 export default function EditTodoPage() {
   const params = useParams();
